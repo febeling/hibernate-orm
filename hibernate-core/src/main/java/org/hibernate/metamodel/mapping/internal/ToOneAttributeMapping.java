@@ -2211,6 +2211,14 @@ public class ToOneAttributeMapping
 						registerJoinedTableEntityNameUsage( lazyTableGroup, foreignKeyDescriptor.getTargetTable(), creationState );
 					}
 
+					org.hibernate.persister.entity.HhhProbe.foreignKeyJoin(
+							getNavigableRole().getFullPath(),
+							String.valueOf( sideNature ),
+							sideNature == ForeignKeyDescriptor.Nature.TARGET
+									? foreignKeyDescriptor.getKeyTable() : foreignKeyDescriptor.getTargetTable(),
+							getAssociatedEntityMappingType().getEntityPersister().getTableName(),
+							creationState.supportsEntityNameUsage() );
+
 					join.applyPredicate( foreignKeyDescriptor.generateJoinPredicate(
 							targetTableReference,
 							keyTableReference,

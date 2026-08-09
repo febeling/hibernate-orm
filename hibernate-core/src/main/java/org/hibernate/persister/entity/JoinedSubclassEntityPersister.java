@@ -1197,6 +1197,7 @@ public class JoinedSubclassEntityPersister extends AbstractEntityPersister {
 
 	@Override
 	public void pruneForSubclasses(TableGroup tableGroup, Map<String, EntityNameUse> entityNameUses) {
+		HhhProbe.pruneEnter( getEntityName(), tableGroup, entityNameUses );
 		final Set<TableReference> retainedTableReferences = new HashSet<>( entityNameUses.size() );
 		final var metamodel = getFactory().getMappingMetamodel();
 		// We can only do this optimization if the table group reports canUseInnerJoins or isRealTableGroup,
@@ -1305,6 +1306,7 @@ public class JoinedSubclassEntityPersister extends AbstractEntityPersister {
 				tableReferenceJoins.removeIf( join -> !retainedTableReferences.contains( join.getJoinedTableReference() ) );
 			}
 		}
+		HhhProbe.pruneExit( tableGroup );
 	}
 
 	private void optimizeInnerJoins(

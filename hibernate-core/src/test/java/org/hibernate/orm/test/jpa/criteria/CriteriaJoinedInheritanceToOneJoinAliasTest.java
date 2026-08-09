@@ -10,6 +10,9 @@ import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -96,6 +99,18 @@ public class CriteriaJoinedInheritanceToOneJoinAliasTest {
 			entityManager.createQuery( "delete from BaseMappingWithCode" ).executeUpdate();
 			entityManager.createQuery( "delete from Asset" ).executeUpdate();
 		} );
+	}
+
+	@BeforeEach
+	public void hhhProbeBegin(EntityManagerFactoryScope scope, TestInfo info) {
+		System.out.println( "\n=== " + info.getTestMethod().orElseThrow().getName() + " ===" );
+		scope.getCollectingStatementInspector().clear();
+	}
+
+	@AfterEach
+	public void hhhProbeEnd(EntityManagerFactoryScope scope) {
+		scope.getCollectingStatementInspector().getSqlQueries()
+				.forEach( q -> System.out.println( "  [sql] " + q ) );
 	}
 
 	@Test
